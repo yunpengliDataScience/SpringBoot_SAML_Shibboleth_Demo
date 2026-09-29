@@ -1,0 +1,10 @@
+target/
+.idea/
+*.iml
+.vscode/
+.DS_Store
+.settings
+.project
+.classpath
+shibboleth-idp/*
+shibboleth-identity-provider-5.2.3/*

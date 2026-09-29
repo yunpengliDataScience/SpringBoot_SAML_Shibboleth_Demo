@@ -1,0 +1,159 @@
+Note: use admin's command prompt!
+
+---------------------------------------------------------------------------
+--Install Shibboleth
+---------------------------------------------------------------------------
+cd C:\Projects\SpringBoot_SAML_Shibboleth_Demo\shibboleth-identity-provider-5.2.3\bin
+
+install.bat
+
+---------------------------------------------------------------------------
+--Install Jetty Base Plugin
+---------------------------------------------------------------------------
+cd C:\Projects\SpringBoot_SAML_Shibboleth_Demo\shibboleth-idp\bin
+plugin.bat -I net.shibboleth.idp.plugin.jetty
+
+plugin.bat -l
+
+downloadjetty.bat 12.1.4
+
+setjettybase.bat 12
+
+echo %JETTY_BASE%
+
+setjettyversion.bat 12.1.4
+
+-------------------------------------------------------------------------------
+--Run Jetty
+-------------------------------------------------------------------------------
+cd C:\Projects\SpringBoot_SAML_Shibboleth_Demo\shibboleth-idp\bin
+
+runjetty.bat
+
+-------------------------------------------------------------------------------
+--Test the IdP
+-------------------------------------------------------------------------------
+In new command window:
+
+cd C:\Projects\SpringBoot_SAML_Shibboleth_Demo\shibboleth-idp\bin
+SET IDP_BASE_URL=http://localhost:8080/idp
+status.bat
+
+---------------------------------------------------------
+--Test Spring app (SP) Metadata
+---------------------------------------------------------
+http://localhost:9091/saml2/metadata/shibboleth
+
+Copy to file springboot-sp-metadata1.xml
+Copy springboot-sp-metadata1.xml to shibboleth-idp\metadata
+
+-------------------------------------------------------------------------------
+--Add to metadata-providers.xml
+-------------------------------------------------------------------------------
+<MetadataProvider id="SpringBoot_Shibboleth_SAML_App1"
+					xsi:type="FilesystemMetadataProvider"
+					metadataFile="%{idp.home}/metadata/springboot-sp-metadata1.xml"/>
+					
+<MetadataProvider id="SpringBoot_Shibboleth_SAML_App2"
+				xsi:type="FilesystemMetadataProvider"
+				metadataFile="%{idp.home}/metadata/springboot-sp-metadata2.xml"/>
+
+
+
+--------------------------------------------------------------------------------
+--Use Python to generate hashed password
+--------------------------------------------------------------------------------
+python -m pip install passlib
+
+python -c "from passlib.hash import sha512_crypt; print(sha512_crypt.hash('password'))"
+
+$6$rounds=656000$Mv23IhZZIYxADyFr$jth066xfHrjJ06rwCBzU1VRVSWNm1Mkysd/UMqtPTeTrHVEanNc47ldwv27RmZBBNNeGUjoYlv.ZeUS5mo9KJ/
+
+-----------------------------------------------------------
+--Add to password-authn-config.xml
+-----------------------------------------------------------
+ <util:list id="shibboleth.authn.Password.Validators">
+		 <bean parent="shibboleth.HTPasswdCredentialValidator"
+				p:resource="%{idp.home}/conf/authn/htpasswd.txt" />
+		  
+        <ref bean="shibboleth.LDAPValidator" />
+        <!-- <ref bean="shibboleth.KerberosValidator" /> -->
+        <!-- <ref bean="shibboleth.JAASValidator" /> -->
+        <!-- <bean parent="shibboleth.HTPasswdValidator" p:resource="%{idp.home}/credentials/demo.htpasswd" /> -->
+    </util:list>
+
+
+------------------------------------------------------------------------------------------------
+--Modify shibboleth-metadata.xml in spring app
+------------------------------------------------------------------------------------------------
+<md:SingleLogoutService
+	Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+	Location="http://localhost:8080/idp/profile/SAML2/SOAP/Redirect/SLO" />
+<md:SingleLogoutService
+	Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+	Location="http://localhost:8080/idp/profile/SAML2/POST/SLO" />
+<md:SingleSignOnService
+	Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign"
+	Location="http://localhost:8080/idp/profile/SAML2/POST-SimpleSign/SSO" />
+<md:SingleSignOnService
+	Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+	Location="http://localhost:8080/idp/profile/SAML2/Redirect/SSO" />
+<md:SingleSignOnService
+	Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+	Location="http://localhost:8080/idp/profile/SAML2/POST/SSO" />
+
+
+------------------------------------------------------------------------------------------------
+--Modify C:\Projects\SpringBoot_SAML_Shibboleth_Demo\shibboleth-idp\conf\relying-party.xml
+------------------------------------------------------------------------------------------------
+<util:list id="shibboleth.RelyingPartyOverrides">
+    
+        <!--
+        Override example that identifies a single RP by name and configures it
+        for SAML 2 SSO without encryption. This is a common "vendor" scenario.
+        -->
+        <!--
+        <bean id="ExampleSP" parent="RelyingPartyByName" c:relyingPartyIds="https://sp.example.org">
+            <property name="profileConfigurations">
+                <list>
+                    <bean parent="SAML2.SSO" p:encryptAssertions="false" />
+                </list>
+            </property>
+        </bean>
+        -->
+		
+		<bean parent="RelyingPartyByName"
+			  c:relyingPartyIds="SpringBoot_Shibboleth_SAML_App1">
+			<property name="profileConfigurations">
+				<list>
+					<bean parent="SAML2.SSO"
+						  p:encryptAssertions="false" />
+				</list>
+			</property>
+		</bean>
+		
+		<bean parent="RelyingPartyByName"
+			  c:relyingPartyIds="SpringBoot_Shibboleth_SAML_App2">
+			<property name="profileConfigurations">
+				<list>
+					<bean parent="SAML2.SSO"
+						  p:encryptAssertions="false" />
+				</list>
+			</property>
+		</bean>
+        
+    </util:list>
+	
+	
+-------------------------------------------------------------------------------
+--Restart Jetty
+-------------------------------------------------------------------------------
+cd C:\Projects\SpringBoot_SAML_Shibboleth_Demo\shibboleth-idp\bin
+
+check.bat
+runjetty.bat
+
+
+Test:
+
+http://localhost:9091/saml2/authenticate/shibboleth

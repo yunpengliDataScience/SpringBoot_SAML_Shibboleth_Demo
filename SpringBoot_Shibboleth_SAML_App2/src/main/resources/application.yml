@@ -1,0 +1,21 @@
+server:
+  port: 9092
+
+spring:
+  application:
+    name: SpringBoot_Shibboleth_SAML_App2
+  security:
+    saml2:
+      relyingparty:
+        registration:
+          shibboleth:
+            # Entity ID by which Shibboleth knows this Spring Boot Service Provider. It should match the client ID in keycloak
+            entity-id: SpringBoot_Shibboleth_SAML_App2
+            assertingparty:
+              # Shibboleth publishes its SAML IdP entity ID, SSO endpoints, bindings,
+              metadata-uri: classpath:saml/shibboleth-metadata.xml
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.security.saml2: DEBUG
