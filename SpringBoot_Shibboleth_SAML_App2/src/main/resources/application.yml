@@ -16,8 +16,13 @@ spring:
           shibboleth:
             # Entity ID by which Shibboleth knows this Spring Boot Service Provider. It should match the client ID in keycloak
             entity-id: SpringBoot_Shibboleth_SAML_App2
+            signing:
+              credentials:
+                - private-key-location: classpath:saml/signingcerts/spring-saml.key
+                  certificate-location: classpath:saml/signingcerts/spring-saml.crt
             assertingparty:
               # Shibboleth publishes its SAML IdP entity ID, SSO endpoints, bindings,
+              # and signing certificate through this metadata document.
               metadata-uri: classpath:saml/shibboleth-metadata.xml
 
 logging:

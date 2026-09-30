@@ -5,7 +5,7 @@ This metadata is not dynamic - it will not change as your configuration changes.
 On Demand Metadata Generation available from the metadatagen plugin.
 -->
 <md:EntityDescriptor entityID="y" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" xmlns:shibmd="urn:mace:shibboleth:metadata:1.0" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-    <md:IDPSSODescriptor WantAuthnRequestsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
         <md:Extensions>
             <shibmd:Scope regexp="false">localdomain</shibmd:Scope>
             <mdui:UIInfo>

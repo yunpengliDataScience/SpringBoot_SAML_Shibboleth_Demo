@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="SpringBoot_Shibboleth_SAML_App1">
+    <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIIDTjCCAjagAwIBAgIUEYXnhJeQQdw1NN0hrul3DAhJXhkwDQYJKoZIhvcNAQELBQAwRzEnMCUGA1UEAwweU3ByaW5nQm9vdF9TaGliYm9sZXRoX1NBTUxfQXBwMQ8wDQYDVQQKDAZEcmFnb24xCzAJBgNVBAYTAlVTMB4XDTI2MDkzMDIxMjI1NFoXDTM2MDkyNzIxMjI1NFowRzEnMCUGA1UEAwweU3ByaW5nQm9vdF9TaGliYm9sZXRoX1NBTUxfQXBwMQ8wDQYDVQQKDAZEcmFnb24xCzAJBgNVBAYTAlVTMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsVPzvx3dqEPH2XjbfeXCzUVrpOmMkXq/qRmuD0Xk86eTPfyLkFqdy2uP7vVtWqMVonFk1RvHmceiueC+s5xdqYgK/IyNXPympSbC+rSdRY5DkTXE4uGCQjCa20DL44CR5BtbRPX7OhMPYb0OoWD7YzDE2s1THnhXgrvZybwcjk7scGwt9ryiiMCPH5Wkoy/0ZnV+EwQbPAcrvPH2LTn7Ws8U00+aMWMlZ0zpG0OhDr0yVZoZYk/6JK293tSBSISic0SjhqCy0Fh6ZWNgJb+nYpXArRkM2V86+8KAPScvpwR1SV+02negIK9E8baWnEIDcnvbt2rU/epnfkFURqM22wIDAQABozIwMDAdBgNVHQ4EFgQUogJfzMgYo+YSn33kycL+BChKnDcwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAfKY8BAUI+RBTD1nLrvuuRgKe15IIDTM6HHHDoKgU0KAVd1qtY5U9iaX38+rsnfniJfLnmFcnjPL9bX2T9bXOc/5dQxXI1MIfp2jzkynKSPUKgSf8oGL7v3HFEewUcvseOI5qtncf4UBZXKQU6SOoNdbciydKTNBdk1BRpkRv9VOjrkK/6adrei5CEdq16WuCXAM6UdGVbFuOIls6xJTMzir1VWRwXKO4/tOMz/IHWpHiyhgguwcv/SsfL+y/Y//ubotjVFjsD6iIyxh5dmZ044sTZCYTc/RIy4XvrESjBTaW+U7rDhk7TNvMN6e2BEmTG6rxnJC87uvqbwQBvnQF5w==</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://localhost:9091/login/saml2/sso/shibboleth" index="1"/>
+    </md:SPSSODescriptor>
+</md:EntityDescriptor>
