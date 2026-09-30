@@ -8,3 +8,5 @@ target/
 .classpath
 shibboleth-idp/*
 shibboleth-identity-provider-5.2.3/*
+temp/
+openssl-4.0.1/

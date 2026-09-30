@@ -1,5 +1,10 @@
 server:
   port: 9091
+  ssl:
+    key-store: classpath:certs/springboot-server.p12
+    key-store-type: PKCS12
+    key-store-password: changeit
+    key-alias: springboot
 
 spring:
   application:

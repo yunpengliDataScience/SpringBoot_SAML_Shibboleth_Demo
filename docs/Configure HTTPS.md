@@ -356,8 +356,6 @@ One other distinction is worth preserving: these HTTPS certificates are **transp
 
 I recommend doing this in two stages: **get `https://localhost:8443/idp/status` working first; don't change Spring yet.** Once that works, enable Spring's HTTPS and update the metadata. This makes troubleshooting much easier.
 
-
-
 ------------
 
 Yes. Your default `.ini` is already almost exactly what you need. You **do not need to add all the properties I showed earlier**—they're already there. For your localhost HTTPS setup, I would make only a few changes.
@@ -537,5 +535,3 @@ https://localhost:8443/idp/status
 If that opens—even with a browser certificate warning—then the Shibboleth HTTPS side is basically working.
 
 **So don't create another certificate yet. Check whether `credentials\idp-userfacing.p12` already exists first.** If you show me the output of the `keytool -list -v` command (you can omit certificate fingerprints if you want), I can tell you whether the existing certificate is suitable for `https://localhost:8443`.
-
-
