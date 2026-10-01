@@ -68,14 +68,15 @@ public class HomeController {
 		/*
 		 * Usually derived from the SAML Subject/NameID.
 		 */
-		result.put("name", principal.getName());
+		//result.put("name", principal.getName());
 
 		/*
 		 * Should be "shibboleth" for our current application.yml configuration.
 		 */
 		result.put("registrationId", principal.getRelyingPartyRegistrationId());
 
-		String username = principal.getFirstAttribute("uid");
+		//the SAML/OID representation of uid
+		String username = principal.getFirstAttribute("urn:oid:0.9.2342.19200300.100.1.1");
 
 		result.put("username", username);
 		
